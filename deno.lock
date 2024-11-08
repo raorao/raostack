@@ -2,7 +2,9 @@
   "version": "4",
   "specifiers": {
     "jsr:@std/assert@1": "1.0.7",
-    "jsr:@std/internal@^1.0.5": "1.0.5"
+    "jsr:@std/internal@^1.0.5": "1.0.5",
+    "npm:@faker-js/faker@*": "9.2.0",
+    "npm:faker@^6.6.6": "6.6.6"
   },
   "jsr": {
     "@std/assert@1.0.7": {
@@ -13,6 +15,14 @@
     },
     "@std/internal@1.0.5": {
       "integrity": "54a546004f769c1ac9e025abd15a76b6671ddc9687e2313b67376125650dc7ba"
+    }
+  },
+  "npm": {
+    "@faker-js/faker@9.2.0": {
+      "integrity": "sha512-ulqQu4KMr1/sTFIYvqSdegHT8NIkt66tFAkugGnHA+1WAfEn6hMzNR+svjXGFRVLnapxvej67Z/LwchFrnLBUg=="
+    },
+    "faker@6.6.6": {
+      "integrity": "sha512-9tCqYEDHI5RYFQigXFwF1hnCwcWCOJl/hmll0lr5D2Ljjb0o4wphb69wikeJDz5qCEzXCoPvG6ss5SDP6IfOdg=="
     }
   },
   "redirects": {
@@ -35,7 +45,8 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@std/assert@1"
+      "jsr:@std/assert@1",
+      "npm:faker@^6.6.6"
     ]
   }
 }
