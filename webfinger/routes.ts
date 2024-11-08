@@ -16,6 +16,8 @@ export async function handleWebFinger(request: Request): Promise<Response> {
   const [_, username, domain] = match;
 
   const ourDomain = Deno.env.get("DOMAIN") || "localhost:8000";
+  console.log(`Domain: ${domain}`);
+
   if (domain !== ourDomain) {
     return new Response("Resource not found", { status: 404 });
   }
