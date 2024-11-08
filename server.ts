@@ -1,4 +1,6 @@
 import { serve } from "https://deno.land/std@0.220.1/http/server.ts";
+import { handleWebFinger } from "./webfinger/routes.ts";
+import { createActor } from "./storage/actors.ts";
 
 const kv = await Deno.openKv();
 const START_TIME = Date.now();
@@ -59,6 +61,9 @@ const handler = async (request: Request): Promise<Response> => {
 
   try {
     switch (url.pathname) {
+      case "/.well-known/webfinger":
+        return await handleWebFinger(request);
+
       case "/":
         return new Response("Welcome to high-performance Deno server!", {
           headers: { "content-type": "text/plain" },
@@ -69,6 +74,29 @@ const handler = async (request: Request): Promise<Response> => {
         return new Response(JSON.stringify(metrics, null, 2), {
           headers: { "content-type": "application/json" },
         });
+
+      case "/api/users": {
+        if (request.method !== "POST") {
+          return new Response("Method not allowed", { status: 405 });
+        }
+
+        const body = await request.json();
+        const { username, displayName, summary } = body;
+
+        if (!username || !displayName) {
+          return new Response("Missing required fields", { status: 400 });
+        }
+
+        const actor = await createActor(username, displayName, summary || "");
+        if (!actor) {
+          return new Response("Username already taken", { status: 409 });
+        }
+
+        return new Response(JSON.stringify(actor), {
+          status: 201,
+          headers: { "content-type": "application/json" },
+        });
+      }
 
       default:
         return new Response("Not Found", { status: 404 });
